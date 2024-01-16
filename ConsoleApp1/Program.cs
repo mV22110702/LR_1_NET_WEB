@@ -57,7 +57,7 @@ T? ParseValueUntilCorrect<T>(Func<T> readDelegate, Predicate<T> predicate, Strin
 void PrintSubstring(String str)
 {
     Console.Write($"Input length (max. {str.Length}): ");
-    var length = ParseValueUntilCorrect(() => Int32.Parse(Console.ReadLine()), (index) => index >= 0 && index <= str.Length, "Invalid length! Try again");
+    var length = ParseValueUntilCorrect(() => Int32.Parse(Console.ReadLine() ?? String.Empty), (index) => index >= 0 && index <= str.Length, "Invalid length! Try again");
     Console.WriteLine("Printing substring...");
     Console.WriteLine(str.Substring(0, length));
 };
@@ -66,7 +66,7 @@ String ReadString()
 {
     Console.WriteLine("Input file path to read:");
     var path = ParseValueUntilCorrect(Console.ReadLine, (path) => File.Exists(path), "Invalid path! Try again");
-    return File.ReadAllText(path);
+    return File.ReadAllText(path ?? String.Empty);
 };
 
 OperatorType ChooseOperator()
@@ -113,13 +113,13 @@ List<MenuOption> GetMainConsoleMenuOptions()
     Func<Object> calculateOption = () =>
     {
         Console.WriteLine("Input first operand number: ");
-        var firstOperand = ParseValueUntilCorrect(() => Double.Parse(Console.ReadLine()), (rawNumber) => true, "Invalid number! Try again");
+        var firstOperand = ParseValueUntilCorrect(() => Double.Parse(Console.ReadLine() ?? String.Empty), (rawNumber) => true, "Invalid number! Try again");
         Double? secondOperand = null;
         var chosenOperator = ChooseOperator();
         if (chosenOperator != OperatorType.Increment && chosenOperator != OperatorType.Decrement)
         {
             Console.WriteLine("Input second operand number: ");
-            secondOperand = ParseValueUntilCorrect(() => Double.Parse(Console.ReadLine()), (rawNumber) => true, "Invalid number! Try again");
+            secondOperand = ParseValueUntilCorrect(() => Double.Parse(Console.ReadLine() ?? String.Empty), (rawNumber) => true, "Invalid number! Try again");
         }
         Console.Write("Result: ");
         var result = CalculateResult(firstOperand, chosenOperator, secondOperand);
